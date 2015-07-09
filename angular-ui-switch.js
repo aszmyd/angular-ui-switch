@@ -13,7 +13,7 @@
              scope: {
                 isDisabled: '@',
                 ngModel: '=',
-                ngChange: '@'
+                ngChange: '&'
             },
             controller: controller,
             template: template,
@@ -46,13 +46,13 @@
             $scope.setElementStyle(element);
             //add click event when not disabled
             if (!angular.isDefined(attrs.isDisabled) || attrs.isDisabled == 'false') {
-                element.bind('click', function (event) {
+                element.bind('click', function () {
                     $scope.$apply(function () {
                         $scope.ngModel = !$scope.ngModel; //toggle
+                        if ($scope.ngChange) {
+                            $scope.ngChange();
+                        }
                     });
-                    if ($scope.ngChange) {
-                        $scope.$parent[$scope.ngChange]();
-                    }
                 });
                 //add watch
                 $scope.$watch(
